@@ -1,6 +1,6 @@
 class TrieNode:
     def __init__(self):
-        self.val=[None]*26
+        self.val={}
         self.eow=False
 
 class Trie(object):
@@ -20,10 +20,9 @@ class Trie(object):
         """
         current=self.root
         for i in word:
-            index=ord(i)-ord('a')
-            if current.val[index] is None:
-                current.val[index]=TrieNode()
-            current=current.val[index]
+            if i not in current.val:
+                current.val[i]=TrieNode()
+            current=current.val[i]
         current.eow=True
             
         
@@ -36,10 +35,9 @@ class Trie(object):
         """
         current=self.root
         for i in word:
-            index=ord(i)-ord('a')
-            if current.val[index] is None:
+            if i not in current.val:
                 return False
-            current=current.val[index]
+            current=current.val[i]
         return current.eow
         
 
@@ -51,10 +49,9 @@ class Trie(object):
         """
         current=self.root
         for i in prefix:
-            index=ord(i)-ord('a')
-            if current.val[index] is None:
+            if i not in current.val:
                 return False
-            current=current.val[index]
+            current=current.val[i]
         return True
         
         
