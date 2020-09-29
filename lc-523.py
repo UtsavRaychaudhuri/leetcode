@@ -1,3 +1,5 @@
+import collections
+
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         """
@@ -5,12 +7,19 @@ class Solution(object):
         :type k: int
         :rtype: bool
         """
-        for i in range(0,len(nums)):
-            local_sum=nums[i]
-            for j in range(i+1,len(nums)):
-                local_sum=local_sum+nums[j]
-                if k==0 and local_sum==0:
-                    return True
-                elif k!=0 and (local_sum%k==0 or local_sum==0):
-                    return True
+        cumsum = [0]
+        for n in nums:
+            cumsum.append(cumsum[-1]+n)
+        record = {}
+        for a,b in zip(cumsum[:-1],cumsum[1:]):
+            b = b%k if k else b
+            a = a%k if k else a
+            if b in record:
+                return True
+            record[a] = 1 
         return False
+        
+
+
+sol=Solution()
+sol.checkSubarraySum([23, 2, 4, 6, 7],  k=6)

@@ -1,13 +1,12 @@
-class Solution(object):
+import sys
+
+
+class Solution:
     def maxProfit(self, prices):
-        """
-        :type prices: List[int]
-        :rtype: int
-        """
-        minPrice, highest = float('inf'), 0
-        for price in prices:
-            if price < minPrice: minPrice = price
-            elif price - minPrice > highest:
-                highest = price - minPrice
-        return highest
+        def mp(i):
+            return max(prices[i]-mp(i+1),mp(i+1))
+        return mp(len(prices)-1)
+
+sol=Solution()
+print(sol.maxProfit([7,1,5,3,6,4]))
         

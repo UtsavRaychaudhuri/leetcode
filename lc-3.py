@@ -4,16 +4,15 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        if s=="":
-            return 0
-        i=max=0
-        j=1
-        my_dict={s[0]:0}
-        while j<len(s):
-            if s[j] in my_dict:
-                max=j-i if j-i>max else max
-                i=my_dict[s[j]]+1 if my_dict[s[j]]+1>i else i
-            my_dict[s[j]]=j
-            j+=1
-        max=j-i if j-i>max else max
-        return max
+        i=res=0
+        ms=set()
+        for j in range(len(s)):
+            while(s[j] in ms):
+                ms.remove(s[i])
+                i+=1
+            ms.add(s[j])
+            res=max(res,j-i+1)
+        return res
+
+sol=Solution()
+print(sol.lengthOfLongestSubstring("c"))

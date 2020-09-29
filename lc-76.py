@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import collections
 class Solution(object):
     def minWindow(self, s, t):
         """
@@ -6,40 +7,37 @@ class Solution(object):
         :type t: str
         :rtype: str
         """
-        a=OrderedDict()
-        v=dict()
-        for i in t:
-            if i in v:
-                v[i]+=1
-            else:
-                v[i]=1
-        u=dict(v)
+        def checkdt(d,t):
+            if len(d)!=len(t):
+                return False
+            for i in d:
+                if d[i]<t[i]:
+                    return False
+            return True
 
-        self.best=(0,0,99999999999999999)
-        for i in range(len(s)):
-            if s[i] in u:
-                if u[s[i]]==1:
-                    del(u[s[i]])
-                else:
-                    u[s[i]]-=1
-                if s[i] in a:
-                    a.pop(s[i])
-                a[s[i]]=i
-                if len(u)==0:
-                    val=a[next(iter(a))]
-                    val2=a[next(reversed(a))]
-                    if (val2-val)<self.best[2]:
-                        self.best=(val,val2,val2-val)
-                    u=dict(v)
-                    del(u[next(iter(a))])
-                    a.pop(next(iter(a)))
-            elif s[i] in a:
-                a.pop(s[i])
-                a[s[i]]=i
-        if self.best[2]==99999999999999999:
+        d=collections.defaultdict(int)
+        t=collections.Counter(t)
+        i=0
+        res=999999
+        for j in range(len(s)):
+            if s[j] in t:
+                d[s[j]]+=1
+            while(checkdt(d,t)):
+                if res==999999:
+                    res=(i,j)
+                elif (j-i)<(res[1]-res[0]):
+                    res=(i,j)
+                if s[i] in d:
+                    d[s[i]]-=1
+                    if d[s[i]]==0:
+                        del d[s[i]]
+                i+=1
+        if res==999999:
             return ""
-        return s[self.best[0]:self.best[1]+1]
+        else:
+            return s[res[0]:res[1]+1]
                 
 
 sol=Solution()
-print(sol.minWindow(s = "aa", t = "aa"))
+print(sol.minWindow("a",
+"aa"))
